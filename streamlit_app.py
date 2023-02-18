@@ -51,18 +51,9 @@ if archivo:
             citas = response_citas.choices[0].text.strip().split("\n")
             citas_totales.extend(citas)
 
-        if len(citas_totales) >= 15:
-            citas_seleccionadas = random.sample(citas_totales, 15)
-        else:
-            citas_seleccionadas = citas_totales
-
         # Utilizamos la API de OpenAI para generar una nueva síntesis original que elabore un documento original con las citas de los anteriores
         prompt_sintesis_novedosa = "Genera un documento original con las siguientes citas:\n"
-        for cita in citas_totales:
-            prompt_sintesis_novedosa += f"- {cita}\n"
-        prompt_sintesis_novedosa += "Síntesis anteriores:\n"
-        for sintesis in sintesis_totales:
-            prompt_sintesis_novedosa += f"- {sintesis}\n"
+        for 
         response_sintesis_novedosa = openai.Completion.create(
             engine="text-davinci-003",
             prompt=prompt_sintesis_novedosa,
