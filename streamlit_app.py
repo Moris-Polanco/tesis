@@ -51,23 +51,27 @@ if archivo:
             citas = response_citas.choices[0].text.strip().split("\n")
             citas_totales.extend(citas)
 
-        # Seleccionamos aleatoriamente 15 citas
-        citas_seleccionadas = random.sample(citas_totales, 15)
+        # Utilizamos la API de OpenAI para generar una nueva síntesis original que elabore un documento original con las citas de los anteriores
+        sintesis_novedosa = ""
+        if len(citas_totales) >= 15:
+            citas_seleccionadas = random.sample(citas_totales, 15)
+            prompt_sintesis_novedosa = "Genera un documento original con las citas de los anteriores:\n"
+            for i, cita in enumerate(citas_seleccionadas):
+                prompt_sintesis_novedosa += f"- ({i+1}) {cita}\n"
+            response_sintesis_novedosa = openai.Completion.create(
+                engine="text-davinci-003",
+                prompt=prompt_sintesis_novedosa,
+                temperature=0.5,
+                max_tokens=4096,
+                n=1,
+                stop=None,
+                timeout=60,
+            )
+            sintesis_novedosa = response_sintesis_novedosa.choices[0].text.strip()
 
-        # Generamos una síntesis original de las citas seleccionadas
-        prompt_sintesis_novedosa = "Genera un documento con las citas seleccionadas:\n"
-        for cita in citas_seleccionadas:
-            prompt_sintesis_novedosa += f"- {cita}\n"
-        response_sintesis_novedosa = openai.Completion.create(
-            engine="text-davinci-003",
-            prompt=prompt_sintesis_novedosa,
-            temperature=0.5,
-            max_tokens=3096,
-            n=1,
-            stop=None,
-            timeout=60,
-        )
-        sintesis_novedosa = response_sintesis_novedosa.choices[0].text.strip()
+            # Reemplazamos los números por el autor correspondiente
+            for i, cita in enumerate(citas_seleccionadas):
+                autor = autores[citas_totales.index(cita)]
 
         # Mostramos los resultados en un pop up
         st.write(f'<h2>Síntesis novedosa:</h2><p>{sintesis_novedosa}</p>', unsafe_allow_html=True, target='new')
