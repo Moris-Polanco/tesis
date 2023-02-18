@@ -2,7 +2,6 @@ import streamlit as st
 import pandas as pd
 import openai
 import os
-import random
 
 # Configuramos el diseño de la página
 st.set_page_config(layout="wide")
@@ -51,21 +50,23 @@ if archivo:
             citas = response_citas.choices[0].text.strip().split("\n")
             citas_totales.extend([f"{autores[i]}: {cita}" for cita in citas])
 
-        # Utilizamos todas las citas obtenidas para generar una nueva síntesis original
-            prompt_sintesis_novedosa = "Genera un documento original con las siguientes citas:\n"
-            for i, cita in enumerate(citas_totales):
-                prompt_sintesis_novedosa += f"{i+1}. {cita}\n"
+        # Utilizamos la API de OpenAI para generar una nueva síntesis original que elabore un documento original con las citas de los anteriores
+        prompt_sintesis_novedosa = "Genera un documento original con las siguientes citas:\n"
+        for i, cita in enumerate(citas_totales):
+            prompt_sintesis_novedosa += f"{i+1}. {cita}\n"
 
-            response_sintesis_novedosa = openai.Completion.create(
-                engine="text-davinci-003",
-                prompt=prompt_sintesis_novedosa,
-                temperature=0.5,
-                max_tokens=3024,
-                n=1,
-                stop=None,
-                timeout=60,
-            )
-            sintesis_novedosa = response_sintesis_novedosa.choices[0].text.strip()
+        response_sintesis_novedosa = openai.Completion.create(
+            engine="text-davinci-003",
+            prompt=prompt_sintesis_novedosa,
+            temperature=0.5,
+            max_tokens=3024,
+            n=1,
+            stop=None,
+            timeout=60,
+        )
+        sintesis_novedosa = response_sintesis_novedosa.choices[0].text.strip()
 
-            # Mostramos los resultados en un pop up
-            st.write(f'<h2>Síntesis novedosa:</h2><p>{sintesis_novedosa}</p>', unsafe_allow_html=True, target='new')
+        # Mostramos los resultados en un pop up
+        st.write(f'<h2>Síntesis novedosa:</h2><p>{sintesis_novedosa}</p>', unsafe_allow_html=True, target='new')
+else:
+    st.write("No se ha cargado ningún archivo.")
