@@ -31,7 +31,7 @@ if archivo:
     if st.button('Generar'):
         # Obtenemos los títulos y los documentoss del archivo
         titulos = data[columna_titulo].tolist()
-        ensayos = data[columna_documento].tolist()
+        documentos = data[columna_documento].tolist()
 
         # Utilizamos la API de GPT-3 para extraer citas de cada documento
         resultados = []
