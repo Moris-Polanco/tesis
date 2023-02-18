@@ -25,17 +25,17 @@ if archivo:
     # Pedimos al usuario que seleccione las columnas con el título y el ensayo
     columnas = data.columns
     columna_titulo = st.selectbox('Selecciona la columna que contiene los títulos:', columnas)
-    columna_ensayo = st.selectbox('Selecciona la columna que contiene los ensayos:', columnas)
+    columna_ensayo = st.selectbox('Selecciona la columna que contiene los documentos:', columnas)
 
     # Agregamos un botón para iniciar la generación
     if st.button('Generar'):
         # Obtenemos los títulos y los documentoss del archivo
         titulos = data[columna_titulo].tolist()
-        ensayos = data[columna_ensayo].tolist()
+        ensayos = data[columna_documento].tolist()
 
         # Utilizamos la API de GPT-3 para extraer citas de cada documento
         resultados = []
-        for i, ensayo in enumerate(ensayos):
+        for i, documento in enumerate(documentos):
             prompt = f"Extrae diez citas texuales del documento titulado '{titulos[i]}'. "
             prompt += f"Documento: {documento}. "
             response = openai.Completion.create(
