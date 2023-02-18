@@ -74,7 +74,8 @@ if archivo:
         )
         sintesis_novedosa = response_sintesis_novedosa.choices[0].text.strip()
 
-# Mostramos los resultados en un pop up
+    # Mostramos los resultados en un pop up
         st.write(f'<h2>Síntesis novedosa:</h2><p>{sintesis_novedosa}</p>', unsafe_allow_html=True, target='new')
-        else:
+    else:
         st.write("No se encontraron suficientes citas para generar una síntesis novedosa.")
+
