@@ -55,7 +55,7 @@ if archivo:
         citas_seleccionadas = random.sample(citas_totales, 15)
 
         # Generamos una síntesis original de las citas seleccionadas
-        prompt_sintesis_novedosa = "Síntesis de las citas seleccionadas:\n"
+        prompt_sintesis_novedosa = "Genera un documento con las citas seleccionadas:\n"
         for cita in citas_seleccionadas:
             prompt_sintesis_novedosa += f"- {cita}\n"
         response_sintesis_novedosa = openai.Completion.create(
