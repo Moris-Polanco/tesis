@@ -51,9 +51,9 @@ if archivo:
             citas = response_citas.choices[0].text.strip().split("\n")
             citas_totales.extend([f"{autores[i]}: {cita}" for cita in citas])
 
-        # Seleccionamos 15 citas al azar
-        if len(citas_totales) >= 15:
-            citas_seleccionadas = random.sample(citas_totales, 15)
+        # Seleccionamos 9 citas al azar
+        if len(citas_totales) >= 9:
+            citas_seleccionadas = random.sample(citas_totales, 9)
 
             # Utilizamos la API de OpenAI para generar una nueva síntesis original que elabore un documento original con las citas de los anteriores
             prompt_sintesis_novedosa = "Genera un documento original con las siguientes citas:\n"
