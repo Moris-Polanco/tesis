@@ -25,7 +25,7 @@ if archivo:
     # Pedimos al usuario que seleccione las columnas con el título y el ensayo
     columnas = data.columns
     columna_titulo = st.selectbox('Selecciona la columna que contiene los títulos:', columnas)
-    columna_ensayo = st.selectbox('Selecciona la columna que contiene los documentos:', columnas)
+    columna_documento = st.selectbox('Selecciona la columna que contiene los documentos:', columnas)
 
     # Agregamos un botón para iniciar la generación
     if st.button('Generar'):
