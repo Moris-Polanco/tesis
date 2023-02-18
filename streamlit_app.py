@@ -59,7 +59,7 @@ if archivo:
                 stop=None,
                 timeout=60,
             )
-            sugerencias = response.choices[0].text.strip()
+            síntesis = response.choices[0].text.strip()
 
             # Agregamos las citas y la sínesis a la tabla
             resultados.append({
