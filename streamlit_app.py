@@ -26,7 +26,7 @@ if archivo:
     # Pedimos al usuario que seleccione las columnas con el autor, título y documento
     columnas = data.columns
     columna_autor = st.selectbox('Selecciona la columna que contiene el autor:', columnas)
-    columna_titulo = st.selectbox('Selecciona la columna que contiene el título:', columnas)
+    columna_titulo = st.selectbox('Selecciona la columna que contiene el título:', columnas) 
     columna_documento = st.selectbox('Selecciona la columna que contiene el documento:', columnas)
 
     # Agregamos un botón para iniciar la generación
