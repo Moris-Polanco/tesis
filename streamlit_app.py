@@ -51,7 +51,7 @@ if archivo:
             citas = response_citas.choices[0].text.strip().split("\n")
             citas_totales.extend(citas)
 
-        # Generamos una síntesis para cada documento a partir de las citas obtenidas
+         # Generamos una síntesis para cada documento a partir de las citas obtenidas
         sintesis_totales = []
         for i, documento in enumerate(documentos):
             # Obtenemos las citas para este documento
@@ -71,8 +71,7 @@ if archivo:
                 timeout=60,
             )
             sintesis = response_s
-            # Agregamos la síntesis a la lista de síntesis totales
-            sintesis_totales.append(sintesis)
+
 
         # Utilizamos la API de OpenAI para generar una nueva síntesis original que cite las síntesis anteriores y las citas seleccionadas
         citas_seleccionadas = random.sample(citas_totales, 15)
