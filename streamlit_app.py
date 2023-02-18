@@ -76,6 +76,7 @@ if archivo:
                 sintesis_totales.append(sintesis)
 
             # Utilizamos la API de OpenAI para generar una nueva síntesis original que cite las síntesis anteriores y las citas seleccionadas
+        if len(citas_totales) >= 15:
             citas_seleccionadas = random.sample(citas_totales, 15)
             prompt_sintesis_novedosa = "Genera una nueva síntesis original que haga una síntesis de todos los documentos anteriores y cite las siguientes citas: "
             for cita in citas_seleccionadas:
@@ -96,3 +97,5 @@ if archivo:
 
             # Mostramos los resultados en un pop up
             st.write(f'<h2>Síntesis novedosa:</h2><p>{sintesis_novedosa}</p>', unsafe_allow_html=True, target='new')
+        else:
+            st.write("No se encontraron suficientes citas para generar una síntesis novedosa.")  
