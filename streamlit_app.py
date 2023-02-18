@@ -75,20 +75,20 @@ if archivo:
                 # Agregamos la síntesis a la lista de síntesis totales
                 sintesis_totales.append(sintesis)
 
-            # Utilizamos la API de OpenAI para generar una nueva síntesis original que cite las síntesis anteriores y las citas seleccionadas
+         # Utilizamos la API de OpenAI para generar una nueva síntesis original que cite las síntesis anteriores y las citas seleccionadas
         if len(citas_totales) >= 15:
             citas_seleccionadas = random.sample(citas_totales, 15)
-            prompt_sintesis_novedosa = "Genera una nueva síntesis original que haga una síntesis de todos los documentos anteriores y cite las siguientes citas: "
+            prompt_sintesis_novedosa = "Genera una síntesis novedosa que haga una síntesis de los documentos anteriores y cite las siguientes citas:\n"
             for cita in citas_seleccionadas:
-                prompt_sintesis_novedosa += f"\n- {cita}"
-            prompt_sintesis_novedosa += "\nSíntesis anteriores:"
+                prompt_sintesis_novedosa += f"- {cita}\n"
+            prompt_sintesis_novedosa += "Síntesis anteriores:\n"
             for sintesis in sintesis_totales:
-                prompt_sintesis_novedosa += f"\n- {sintesis}"
+                prompt_sintesis_novedosa += f"- {sintesis}\n"
             response_sintesis_novedosa = openai.Completion.create(
                 engine="text-davinci-003",
                 prompt=prompt_sintesis_novedosa,
-                temperature=0,
-                max_tokens=2048,
+                temperature=0.5,
+                max_tokens=1024,
                 n=1,
                 stop=None,
                 timeout=60,
@@ -98,4 +98,4 @@ if archivo:
             # Mostramos los resultados en un pop up
             st.write(f'<h2>Síntesis novedosa:</h2><p>{sintesis_novedosa}</p>', unsafe_allow_html=True, target='new')
         else:
-            st.write("No se encontraron suficientes citas para generar una síntesis novedosa.")  
+            st.write("No se encontraron suficientes citas para generar una síntesis novedosa.")
