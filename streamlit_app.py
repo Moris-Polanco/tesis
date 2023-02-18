@@ -29,7 +29,7 @@ if archivo:
 
     # Agregamos un botón para iniciar la generación
     if st.button('Generar'):
-        # Obtenemos los títulos y los ensayos del archivo
+        # Obtenemos los títulos y los documentoss del archivo
         titulos = data[columna_titulo].tolist()
         ensayos = data[columna_ensayo].tolist()
 
@@ -37,7 +37,7 @@ if archivo:
         resultados = []
         for i, ensayo in enumerate(ensayos):
             prompt = f"Extrae diez citas texuales del documento titulado '{titulos[i]}'. "
-            prompt += f"Documento: {doocumento}. "
+            prompt += f"Documento: {documento}. "
             response = openai.Completion.create(
                 engine="text-davinci-003",
                 prompt=prompt,
