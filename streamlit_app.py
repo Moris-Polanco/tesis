@@ -47,7 +47,7 @@ if archivo:
                 stop=None
                 
             )
-            interpretación = response.choices[0].text.strip()
+            citas = response.choices[0].text.strip()
 
             # Agregamos una síntesis elaborada a partir de las citas
             response = openai.Completion.create(
