@@ -23,21 +23,23 @@ if archivo:
     # Leemos el archivo con pandas
     data = pd.read_excel(archivo)
 
-    # Pedimos al usuario que seleccione las columnas con el título y el ensayo
+    # Pedimos al usuario que seleccione las columnas con el autor, título y documento
     columnas = data.columns
-    columna_titulo = st.selectbox('Selecciona la columna que contiene los títulos:', columnas)
-    columna_documento = st.selectbox('Selecciona la columna que contiene los documentos:', columnas)
+    columna_autor = st.selectbox('Selecciona la columna que contiene el autor:', columnas)
+    columna_titulo = st.selectbox('Selecciona la columna que contiene el título:', columnas)
+    columna_documento = st.selectbox('Selecciona la columna que contiene el documento:', columnas)
 
     # Agregamos un botón para iniciar la generación
     if st.button('Generar'):
-        # Obtenemos los títulos y los documentos del archivo
+        # Obtenemos los autores, títulos y documentos del archivo
+        autores = data[columna_autor].tolist()
         titulos = data[columna_titulo].tolist()
         documentos = data[columna_documento].tolist()
 
         # Utilizamos la API de GPT-3 para extraer citas de cada documento
         citas_totales = []
         for i, documento in enumerate(documentos):
-            prompt_citas = f"Extrae diez citas textuales del documento titulado '{titulos[i]}'. Documento: {documento}. "
+            prompt_citas = f"Extrae diez citas textuales del documento titulado '{titulos[i]}' de {autores[i]}. Documento: {documento}. "
             response_citas = openai.Completion.create(
                 engine="text-davinci-003",
                 prompt=prompt_citas,
@@ -52,7 +54,7 @@ if archivo:
         # Generamos una síntesis para cada documento a partir de las citas obtenidas
         sintesis_totales = []
         for i, documento in enumerate(documentos):
-            prompt_sintesis = f"Elabora una síntesis e interpretación del documento titulado '{titulos[i]}'. Documento: {documento}. Citas: "
+            prompt_sintesis = f"Elabora una síntesis e interpretación del documento titulado '{titulos[i]}' de {autores[i]}. Documento: {documento}. Citas: "
             for cita in citas_totales:
                 prompt_sintesis += f"\n- {cita}"
             response_sintesis = openai.Completion.create(
