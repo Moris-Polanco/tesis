@@ -51,25 +51,30 @@ if archivo:
             citas = response_citas.choices[0].text.strip().split("\n")
             citas_totales.extend(citas)
 
-            # Utilizamos la API de OpenAI para generar una nueva síntesis original que elabore un documento original con las citas de los anteriores
-            prompt_sintesis_novedosa = "Genera un documento original con las citas de los anteriores:\n"
-            for cita in citas_seleccionadas:
-                prompt_sintesis_novedosa += f"- {cita}\n"
-            prompt_sintesis_novedosa += "Síntesis anteriores:\n"
-            for sintesis in sintesis_totales:
-                prompt_sintesis_novedosa += f"- {sintesis}\n"
-            response_sintesis_novedosa = openai.Completion.create(
-                engine="text-davinci-003",
-                prompt=prompt_sintesis_novedosa,
-                temperature=0.5,
-                max_tokens=3024,
-                n=1,
-                stop=None,
-                timeout=60,
-            )
-            sintesis_novedosa = response_sintesis_novedosa.choices[0].text.strip()
+        if len(citas_totales) >= 15:
+            citas_seleccionadas = random.sample(citas_totales, 15)
+        else:
+            citas_seleccionadas = citas_totales
 
-            # Mostramos los resultados en un pop up
+        # Utilizamos la API de OpenAI para generar una nueva síntesis original que elabore un documento original con las citas de los anteriores
+        prompt_sintesis_novedosa = "Genera un documento original con las siguientes citas:\n"
+        for cita in citas_totales:
+            prompt_sintesis_novedosa += f"- {cita}\n"
+        prompt_sintesis_novedosa += "Síntesis anteriores:\n"
+        for sintesis in sintesis_totales:
+            prompt_sintesis_novedosa += f"- {sintesis}\n"
+        response_sintesis_novedosa = openai.Completion.create(
+            engine="text-davinci-003",
+            prompt=prompt_sintesis_novedosa,
+            temperature=0.5,
+            max_tokens=3024,
+            n=1,
+            stop=None,
+            timeout=60,
+        )
+        sintesis_novedosa = response_sintesis_novedosa.choices[0].text.strip()
+
+        # Mostramos los resultados en un pop up
             st.write(f'<h2>Síntesis novedosa:</h2><p>{sintesis_novedosa}</p>', unsafe_allow_html=True, target='new')
         else:
             st.write("No se encontraron suficientes citas para generar una síntesis novedosa.")
