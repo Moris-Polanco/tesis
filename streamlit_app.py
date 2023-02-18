@@ -48,8 +48,8 @@ if archivo:
                 n=1,
                 stop=None
                 )
-                citas = response_citas.choices[0].text.strip().split("\n")
-                citas_totales.extend(citas)
+            citas = response_citas.choices[0].text.strip().split("\n")
+            citas_totales.extend(citas)
 
             # Generamos una síntesis para cada documento a partir de las citas obtenidas
             sintesis_totales = []
