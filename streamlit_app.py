@@ -47,50 +47,52 @@ if archivo:
                 max_tokens=512,
                 n=1,
                 stop=None
-            )
-            citas = response_citas.choices[0].text.strip().split("\n")
-            citas_totales.extend(citas)
+                )
+                citas = response_citas.choices[0].text.strip().split("\n")
+                citas_totales.extend(citas)
 
-         # Generamos una síntesis para cada documento a partir de las citas obtenidas
-        sintesis_totales = []
-        for i, documento in enumerate(documentos):
-            # Obtenemos las citas para este documento
-            citas = citas_totales[i*10:i*10+10]
+            # Generamos una síntesis para cada documento a partir de las citas obtenidas
+            sintesis_totales = []
+            for i, documento in enumerate(documentos):
+                # Obtenemos las citas para este documento
+                citas = citas_totales[i*10:i*10+10]
 
-            # Utilizamos la API de GPT-3 para generar una síntesis del documento
-            prompt_sintesis = f"Elabora una síntesis e interpretación del documento titulado '{titulos[i]}' de {autores[i]}. Documento: {documento}. Citas: "
-            for cita in citas:
-                prompt_sintesis += f"\n- {cita}"
-            response_sintesis = openai.Completion.create(
+                # Utilizamos la API de GPT-3 para generar una síntesis del documento
+                prompt_sintesis = f"Elabora una síntesis e interpretación del documento titulado '{titulos[i]}' de {autores[i]}. Documento: {documento}. Citas: "
+                for cita in citas:
+                    prompt_sintesis += f"\n- {cita}"
+                response_sintesis = openai.Completion.create(
+                    engine="text-davinci-003",
+                    prompt=prompt_sintesis,
+                    temperature=0,
+                    max_tokens=1024,
+                    n=1,
+                    stop=None,
+                    timeout=60,
+                )
+                sintesis = response_sintesis.choices[0].text.strip()
+
+                # Agregamos la síntesis a la lista de síntesis totales
+                sintesis_totales.append(sintesis)
+
+            # Utilizamos la API de OpenAI para generar una nueva síntesis original que cite las síntesis anteriores y las citas seleccionadas
+            citas_seleccionadas = random.sample(citas_totales, 15)
+            prompt_sintesis_novedosa = "Genera una nueva síntesis original que haga una síntesis de todos los documentos anteriores y cite las siguientes citas: "
+            for cita in citas_seleccionadas:
+                prompt_sintesis_novedosa += f"\n- {cita}"
+            prompt_sintesis_novedosa += "\nSíntesis anteriores:"
+            for sintesis in sintesis_totales:
+                prompt_sintesis_novedosa += f"\n- {sintesis}"
+            response_sintesis_novedosa = openai.Completion.create(
                 engine="text-davinci-003",
-                prompt=prompt_sintesis,
+                prompt=prompt_sintesis_novedosa,
                 temperature=0,
-                max_tokens=1024,
+                max_tokens=2048,
                 n=1,
                 stop=None,
                 timeout=60,
             )
-            sintesis = response_s
+            sintesis_novedosa = response_sintesis_novedosa.choices[0].text.strip()
 
-
-        # Utilizamos la API de OpenAI para generar una nueva síntesis original que cite las síntesis anteriores y las citas seleccionadas
-        citas_seleccionadas = random.sample(citas_totales, 15)
-        prompt_sintesis_novedosa = "Genera una nueva síntesis original que haga una síntesis de todos los documentos anteriores y cite las siguientes citas: "
-        for cita in citas_seleccionadas:
-            prompt_sintesis_novedosa += f"\n- {cita}"
-        prompt_sintesis_novedosa += "\nSíntesis anteriores:"
-        for sintesis in sintesis_totales:
-            prompt_sintesis_novedosa += f"\n- {sintesis}"
-        response_sintesis_novedosa = openai.Completion.create(
-            engine="text-davinci-003",
-            prompt=prompt_sintesis_novedosa,
-            temperature=0,
-            max_tokens=2048,
-            n=1,
-            stop=None,
-            timeout=60,
-        )
-        sintesis_novedosa = response_sintesis_novedosa.choices[0].text.strip()
-
-        # Mostramos los resultados en un pop up
-        st.write(f'<h2>Síntesis novedosa:</h2><p>{sintesis_novedosa}</p>', unsafe_allow_html=True, target='new')
+            # Mostramos los resultados en un pop up
+            st.write(f'<h2>Síntesis novedosa:</h2><p>{sintesis_novedosa}</p>', unsafe_allow_html=True, target='new')
