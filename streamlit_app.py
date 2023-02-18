@@ -62,7 +62,7 @@ if archivo:
                 engine="text-davinci-003",
                 prompt=prompt_sintesis_novedosa,
                 temperature=0.5,
-                max_tokens=4096,
+                max_tokens=3096,
                 n=1,
                 stop=None,
                 timeout=60,
